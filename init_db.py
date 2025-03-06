@@ -15,8 +15,8 @@ with app.app_context():
         password=generate_password_hash('admin'),
         smtp_host='smtp.gmail.com',
         smtp_port=587,
-        smtp_username='powerlineresearchpublication@gmail.com',  # Replace with your Gmail
-        smtp_password='reeq jitq bgrp tocf'      # Replace with Gmail App Password
+        smtp_username='add your email address',  # Replace with your Gmail
+        smtp_password='add your app password'      # Replace with Gmail App Password
     )
     db_session.add(new_admin)
     db_session.commit()
