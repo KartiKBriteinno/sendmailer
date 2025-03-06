@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Admin Panel</h1>
+    <h3>Manage Users</h3>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="admin-container">
+        {% for user in users %}
+            <div class="user-card">
+                <p>{{ user.username }} - Credits: {{ user.credits }} - Banned: {{ user.is_banned }}</p>
+                <form method="POST">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="number" name="credits" placeholder="Credits" min="0">
+                    <button type="submit" name="action" value="add_credits">Add Credits</button>
+                    <button type="submit" name="action" value="remove_credits">Remove Credits</button>
+                    {% if user.is_banned %}
+                        <button type="submit" name="action" value="unban">Unban User</button>
+                    {% else %}
+                        <button type="submit" name="action" value="ban">Ban User</button>
+                    {% endif %}
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

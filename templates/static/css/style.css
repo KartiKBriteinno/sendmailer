@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    background: #333;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 10px 0;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 500px;
+}
+
+textarea, input {
+    padding: 10px;
+}
+
+button {
+    padding: 10px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.status {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 300px;
+    background: #f4f4f4;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+    .content {
+        padding: 10px;
+    }
+    .status {
+        position: static;
+        width: 100%;
+    }
+}

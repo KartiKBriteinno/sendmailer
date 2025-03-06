@@ -1,0 +1,25 @@
+/* Admin-specific styles */
+.admin-container {
+    max-width: 800px;
+    margin: 20px;
+}
+
+.user-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+}
+
+.user-card form {
+    display: flex;
+    gap: 10px;
+}
+
+.user-card button {
+    background: #dc3545;
+}
+
+.user-card button:hover {
+    background: #c82333;
+}

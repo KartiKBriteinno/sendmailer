@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>SMTP Login</h1>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="text" name="smtp_host" placeholder="SMTP Host" required><br>
+        <input type="number" name="smtp_port" placeholder="SMTP Port" required><br>
+        <input type="text" name="smtp_username" placeholder="SMTP Username" required><br>
+        <input type="password" name="smtp_password" placeholder="SMTP Password" required><br>
+        <button type="submit">Login</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% endblock %}

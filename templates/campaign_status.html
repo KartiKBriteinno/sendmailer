@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Campaign Status: {{ campaign.subject }}</h1>
+    <p><strong>Content:</strong> {{ campaign.content | safe }}</p>
+    <p><strong>Status:</strong> <span id="status">{{ campaign.status }}</span></p>
+    <p><strong>Sent Count:</strong> {{ campaign.sent_count }}</p>
+    <h3>Tracking Details</h3>
+    <table>
+        <tr><th>Email</th><th>Sent</th><th>Opened</th><th>Bounced</th><th>Responded</th><th>Unsubscribed</th></tr>
+        <tbody id="email-status"></tbody>
+    </table>
+    <script>
+        function updateStatus() {
+            fetch('/campaign_status/{{ campaign.id }}')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').textContent = '{{ campaign.status }}';  // Static for now
+                    const tbody = document.getElementById('email-status');
+                    tbody.innerHTML = '';
+                    data.emails.forEach(email => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${email.recipient}</td>
+                            <td>${email.sent ? 'Yes' : 'No'}</td>
+                            <td>${email.opened ? 'Yes' : 'No'}</td>
+                            <td>${email.bounced ? 'Yes' : 'No'}</td>
+                            <td>${email.responded ? 'Yes' : 'No'}</td>
+                            <td>${email.unsubscribed ? 'Yes' : 'No'}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                });
+        }
+        setInterval(updateStatus, 2000);  // Update every 2 seconds
+        updateStatus();  // Initial call
+    </script>
+{% endblock %}

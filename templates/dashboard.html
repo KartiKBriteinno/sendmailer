@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Dashboard</h1>
+    <p>Credits: {{ current_user.credits }}</p>
+    <form method="POST">
+        <textarea name="recipients" placeholder="Enter recipients (comma-separated)"></textarea><br>
+        <input type="text" name="subject" placeholder="Subject" required><br>
+        <textarea name="content" placeholder="HTML Content" required></textarea><br>
+        <button type="submit">Send Emails</button>
+    </form>
+    <div class="status">
+        <h3>Live Status (Latest Campaign)</h3>
+        <div id="status-updates">
+            <table>
+                <tr><th>Email</th><th>Sent</th><th>Opened</th><th>Bounced</th><th>Responded</th><th>Unsubscribed</th></tr>
+                <tbody id="email-status"></tbody>
+            </table>
+        </div>
+    </div>
+    <h3>Campaigns</h3>
+    <ul>
+        {% for campaign in campaigns %}
+            <li><a href="{{ url_for('routes.campaign_status', campaign_id=campaign.id) }}">{{ campaign.subject }}</a></li>
+        {% endfor %}
+    </ul>
+    <h3>Notifications</h3>
+    <ul>
+        {% for notification in notifications %}
+            <li>{{ notification.message }}</li>
+        {% endfor %}
+    </ul>
+    <script>
+        function updateDashboardStatus() {
+            {% if campaigns %}
+                fetch('/campaign_status/{{ campaigns[-1].id }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tbody = document.getElementById('email-status');
+                        tbody.innerHTML = '';
+                        data.emails.forEach(email => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${email.recipient}</td>
+                                <td>${email.sent ? 'Yes' : 'No'}</td>
+                                <td>${email.opened ? 'Yes' : 'No'}</td>
+                                <td>${email.bounced ? 'Yes' : 'No'}</td>
+                                <td>${email.responded ? 'Yes' : 'No'}</td>
+                                <td>${email.unsubscribed ? 'Yes' : 'No'}</td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    });
+            {% endif %}
+        }
+        setInterval(updateDashboardStatus, 2000);  // Update every 2 seconds
+        updateDashboardStatus();  // Initial call
+    </script>
+{% endblock %}
